@@ -86,7 +86,7 @@ const GradeSubmissions = () => {
                     {selectedSub.files.map((file, idx) => (
                       <li key={idx} className="text-sm">
                         <a 
-                          href={`http://localhost:5000/${file.file_path.replace('public/', '')}`} 
+                          href={`/uploads/submissions/${file.file_name}`} 
                           target="_blank" 
                           rel="noopener noreferrer"
                           className="text-blue-600 hover:underline flex items-center gap-1"

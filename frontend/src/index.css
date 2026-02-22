@@ -7,3 +7,23 @@ body {
   padding: 0;
   box-sizing: border-box;
 }
+
+/* Fix RPGUI Inputs */
+.rpgui-input {
+  background-color: #333 !important;
+  color: white !important;
+  border: 2px solid #555 !important;
+  padding: 8px !important;
+  font-family: inherit !important;
+}
+
+.rpgui-input:focus {
+  border-color: #ffcc00 !important;
+  outline: none;
+}
+
+/* Ensure white background for teacher/admin pages if needed */
+.bg-white .rpgui-input {
+  background-color: #fff !important;
+  color: #000 !important;
+}

@@ -16,6 +16,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Static files
+app.use('/uploads/submissions', express.static(path.join(__dirname, '../public/uploads/submissions')));
 app.use('/uploads', express.static(path.join(__dirname, '../public/uploads')));
 
 // Routes
