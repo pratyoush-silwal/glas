@@ -13,5 +13,6 @@ router.get('/available-courses', auth, studentController.getAvailableCourses);
 router.post('/enroll', auth, studentController.enrollCourse);
 router.post('/submit-quest', auth, upload.array('files', 5), studentController.submitQuest);
 router.get('/leaderboard', auth, studentController.getLeaderboard);
+router.get('/report', auth, studentController.getReport);
 
 module.exports = router;

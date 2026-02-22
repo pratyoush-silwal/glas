@@ -91,10 +91,11 @@ const QuestDetail = () => {
           <label>Attachments (PDF, Images):</label>
           <input 
             type="file" 
-            className="rpgui-input"
+            className="rpgui-button golden text-xs"
             multiple 
             onChange={handleFileChange}
             accept=".pdf,.jpg,.jpeg,.png"
+            style={{width: '100%', marginBottom: '10px'}}
           />
           <p className="text-xs text-gray-500">You can select multiple files.</p>
 

@@ -1,9 +1,53 @@
 const studentService = require('../services/studentService');
+const PDFDocument = require('pdfkit');
 
 const getProfile = async (req, res) => {
   try {
     const profile = await studentService.getProfile(req.user.id);
     res.json({ success: true, data: profile });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+};
+
+const getReport = async (req, res) => {
+  try {
+    const profile = await studentService.getProfile(req.user.id);
+    const skills = await studentService.getSkills(profile.id);
+    const quests = await studentService.getQuests(profile.id);
+
+    const doc = new PDFDocument();
+    let filename = `Report_${profile.character_name}.pdf`;
+    filename = encodeURIComponent(filename);
+
+    res.setHeader('Content-disposition', 'attachment; filename="' + filename + '"');
+    res.setHeader('Content-type', 'application/pdf');
+
+    doc.fontSize(25).text('Hero Progress Report', { align: 'center' });
+    doc.moveDown();
+    doc.fontSize(18).text(`Character: ${profile.character_name}`);
+    doc.fontSize(14).text(`Class: ${profile.class_name} | Level: ${profile.level}`);
+    doc.text(`Total XP: ${profile.experience_points} | Gold: ${profile.gold}`);
+    
+    doc.moveDown();
+    doc.fontSize(16).text('Stats:', { underline: true });
+    doc.fontSize(12).text(`STR: ${profile.strength} | DEX: ${profile.dexterity} | INT: ${profile.intelligence}`);
+    doc.text(`WIS: ${profile.wisdom} | CON: ${profile.constitution} | CHA: ${profile.charisma}`);
+
+    doc.moveDown();
+    doc.fontSize(16).text('Skill Mastery:', { underline: true });
+    skills.forEach(skill => {
+      doc.fontSize(12).text(`${skill.name}: Level ${skill.skill_level} (${skill.mastery_points} points)`);
+    });
+
+    doc.moveDown();
+    doc.fontSize(16).text('Recent Quests:', { underline: true });
+    quests.slice(0, 10).forEach(q => {
+      doc.fontSize(12).text(`- ${q.title}: ${q.submission_status || 'In Progress'}`);
+    });
+
+    doc.end();
+    doc.pipe(res);
   } catch (error) {
     res.status(500).json({ success: false, error: error.message });
   }
@@ -98,6 +142,7 @@ const getLeaderboard = async (req, res) => {
 
 module.exports = {
   getProfile,
+  getReport,
   getSkills,
   getQuests,
   getRituals,
